@@ -1,11 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Mission4;
 
-GamePrint gp = new GamePrint();
-
-Console.WriteLine("Hello, World!");
-
-
 // this is Mission 4 for group 0102, Emily Peterson, Elise Pickett, Lindsey Gordon, Patrick Nieves
 
 using Mission4;
@@ -19,10 +14,11 @@ class Program
         Console.WriteLine("Welcome to Tic-Tac-Toe!");
 
         //Create game board array
-        int[] game_board_array = new int[9]
+        int[] game_board_array = new int[9];
 
         //Ask each play for their choice and update the game board array
-        choice = Console.Readline("Please enter your move (1-9):")
+        Console.Write("Please enter your move (1-9):");
+        int choice = int.Parse(Console.ReadLine());
 
         //checking if choice has already been guessed
         int numberToCheck = choice;
@@ -35,7 +31,7 @@ class Program
         {
             Console.WriteLine($"Number {numberToCheck} has not been guessed yet.");
             //Update gameboard array
-            for (i = 0; int < 9 : i++)
+            for (int i = 0; i < 9 : i++)
             {
                 if (choice == i)
                 {
@@ -45,7 +41,7 @@ class Program
 
         }
         // Create an instance of the supporting class
-        TicTacToeGame game = new TicTacToeGame();
+        GamePrint game = new GamePrint();
 
         // Loop for each turn until there's a winner or the board is full
         while (!game.IsGameOver())

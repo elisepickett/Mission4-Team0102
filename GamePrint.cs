@@ -23,7 +23,7 @@ namespace Mission4
                 Console.WriteLine("");
             }
         }
-        public void PrintWinner()
+        public void CheckForWinner()
         {
             //figure out combinations to determine a winner
             //use variables in combinations; variable inputs here depend on how Program.cs input is received
