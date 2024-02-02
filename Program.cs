@@ -1,120 +1,79 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using System;
 using Mission4;
-
-GamePrint gp = new GamePrint();
-
-Console.WriteLine("Hello, World!");
-
-
 // this is Mission 4 for group 0102, Emily Peterson, Elise Pickett, Lindsey Gordon, Patrick Nieves
-
-using Mission4;
-using System;
-
-using System;
 
 class Program
 {
     static void Main()
     {
-        //Welcome them into the game
+        //declare GamePrint class
+        GamePrint game = new GamePrint();
+
+        //Welcome them into the game and declare game board array
         Console.WriteLine("Welcome to Tic-Tac-Toe!");
 
-        // Create game board array
         int[] game_board_array = new int[9];
+        int turn = 0;
 
-        int choice = 0;
-
+        //while loop to print game board until false
         while (true)
         {
-            // Ask each player for their choice and update the game board array
-            Console.Write("Please enter your move (1-9): ");
-            string input = Console.ReadLine();
+            //call PrintBoard method to print the board before each turn
+            game.PrintBoard(game_board_array);
 
-            if (int.TryParse(input, out choice))
+            int choice = 0;
+
+            //while loop to gather users' choice
+            while (true)
             {
-                if (choice >= 1 && choice <= 9)
+                // Ask each player for their choice and update the game board array
+                Console.Write($"Player {game.GetCurrentPlayer(turn)}, please enter your move (1-9): ");
+                string input = Console.ReadLine();
+
+                if (int.TryParse(input, out choice))
                 {
-                    if (game_board_array[choice - 1] == 0) // Check if the cell is not already filled
+                    if (choice >= 1 && choice <= 9)
                     {
-                        game_board_array[choice - 1] = 1; // Update game board
-                        break; // Valid input, exit the loop
+                        // Check if the cell is not already filled
+                        if (game_board_array[choice - 1] == 0)
+                        {
+                            // Update game board
+                            game_board_array[choice - 1] = game.GetCurrentPlayer(turn);
+                            break;// Valid input, exit the loop
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Cell {choice} is already occupied. Please choose an empty cell.");
+                        }
                     }
                     else
                     {
-                        Console.WriteLine($"Cell {choice} is already occupied. Please choose an empty cell.");
+                        Console.WriteLine("Invalid input. Please enter a number between 1 and 9.");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Invalid input. Please enter a number between 1 and 9.");
+                    Console.WriteLine("Invalid input. Please enter a valid number.");
                 }
             }
-            else
+
+            //if statement to call GamePrint class and check if game is over; i.e. winner or all cells occupied
+            if (game.IsGameOver(game_board_array))
             {
-                Console.WriteLine("Invalid input. Please enter a valid number.");
-            }
-        }
+                game.PrintBoard(game_board_array);
 
-        Console.WriteLine("Valid input received. Proceeding with the game...");
-
-        // Checking if choice has already been guessed
-        int numberToCheck = choice;
-
-        // Assuming IsNumberAlreadyGuessed is defined elsewhere
-        if (IsNumberAlreadyGuessed(game_board_array, numberToCheck))
-        {
-            Console.WriteLine($"Number {numberToCheck} has already been guessed.");
-        }
-        else
-        {
-            Console.WriteLine($"Number {numberToCheck} has not been guessed yet.");
-
-            // Update gameboard array
-            for (int i = 0; i < 9; i++)
-            {
-                if (choice == i)
+                if (game.CheckForWinner(game_board_array))
                 {
-                    game_board_array[choice - i]++;
+                    Console.WriteLine($"Player {game.GetCurrentPlayer(turn)} wins!");
                 }
-            }
-        }
-
-        // Create an instance of the supporting class (assuming TicTacToeGame is defined elsewhere)
-        TicTacToeGame game = new TicTacToeGame();
-
-        // Loop for each turn until there's a winner or the board is full
-        while (!game.IsGameOver())
-        {
-            // Print the current state of the board
-            game.PrintBoard();
-
-            // Get the current player's choice and update the board
-            game.TakeTurn();
-
-            // Check for a winner
-            if (game.CheckForWinner())
-            {
-                // Print the final state of the board
-                game.PrintBoard();
-
-                // Announce the winner
-                Console.WriteLine($"Player {game.GetCurrentPlayer()} wins!");
-                return; // Exit the game
+                else
+                {
+                    Console.WriteLine("It's a tie! The board is full.");
+                }
+                return;
             }
 
-            // Switch to the next player for the next turn
-            game.SwitchPlayer();
+            game.SwitchPlayer(ref turn);
         }
-
-        // If the loop completes and there is no winner, it's a tie
-        Console.WriteLine("It's a tie! The board is full.");
-    }
-
-    // Placeholder for the IsNumberAlreadyGuessed function
-    static bool IsNumberAlreadyGuessed(int[] game_board_array, int numberToCheck)
-    {
-        // Implementation logic here
-        return false; // Placeholder return value
     }
 }
